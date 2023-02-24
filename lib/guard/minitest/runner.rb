@@ -85,7 +85,7 @@ module Guard
       end
 
       def bundler?
-        @options[:bundler] && !@options[:spring]
+        @options[:bundler] && !@options[:spring] && @options[:rails_runner]
       end
 
       def rubygems?
@@ -140,7 +140,7 @@ module Guard
 
       def _run_possibly_bundled_command(paths, all)
         args = minitest_command(paths, all)
-        bundler_env = !bundler? && defined?(::Bundler)
+        bundler_env = !rails_runner? && !bundler? && defined?(::Bundler)
         bundler_env ? ::Bundler.with_original_env { _run(*args) } : _run(*args)
       end
 
