@@ -29,7 +29,7 @@ module Guard
         [:test_folders, :test_file_patterns, :exclude_regexps].each do |k|
           @options[k] = Array(@options[k]).uniq.compact
         end
-
+        debugger
         @inspector = Inspector.new(test_folders, test_file_patterns, exclude_regexps)
       end
 
