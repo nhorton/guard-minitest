@@ -8,7 +8,7 @@ module Guard
       def initialize(test_folders, test_file_patterns, exclude_regexps)
         @test_folders = test_folders.uniq.compact
         @test_file_patterns = test_file_patterns.uniq.compact
-        @exclude_regexp = exclude_regexps.uniq.compact
+        @exclude_regexps = exclude_regexps.uniq.compact
       end
 
       def clean_all
