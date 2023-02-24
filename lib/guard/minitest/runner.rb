@@ -102,6 +102,7 @@ module Guard
       
       def rails_runner?
         @options[:rails_runner].is_a?(String) || @options[:rails_runner]
+      end
 
       def spring?
         @options[:spring].is_a?(String) || @options[:spring]
