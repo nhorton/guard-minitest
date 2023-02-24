@@ -3,11 +3,12 @@ require 'guard/minitest'
 module Guard
   class Minitest < Plugin
     class Inspector
-      attr_reader :test_folders, :test_file_patterns
+      attr_reader :test_folders, :test_file_patterns, :exclude_regexps
 
-      def initialize(test_folders, test_file_patterns)
+      def initialize(test_folders, test_file_patterns, exclude_regexps)
         @test_folders = test_folders.uniq.compact
         @test_file_patterns = test_file_patterns.uniq.compact
+        @exclude_regexp = exclude_regexps.uniq.compact
       end
 
       def clean_all
@@ -39,7 +40,9 @@ module Guard
         paths = _join_for_glob(Array(paths))
         files = _join_for_glob(test_file_patterns)
 
-        Dir["#{paths}/**/#{files}"]
+        Dir["#{paths}/**/#{files}"].filter do |file|
+          exclude_regexps.any? { |re| re === file }
+        end
       end
 
       def _test_file?(path)
