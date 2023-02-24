@@ -41,7 +41,7 @@ module Guard
         files = _join_for_glob(test_file_patterns)
 
         Dir["#{paths}/**/#{files}"].filter do |file|
-          @exclude_regexps.any? { |re| re === file }
+          @exclude_regexps.none? { |re| re === file }
         end
       end
 
