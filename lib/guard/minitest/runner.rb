@@ -19,17 +19,18 @@ module Guard
           include:            [],
           test_folders:       %w(test spec),
           test_file_patterns: %w(*_test.rb test_*.rb *_spec.rb),
+          exclude_regexps:    [],
           cli:                nil,
           autorun:            true
         }.merge(options)
 
         parse_deprecated_options
 
-        [:test_folders, :test_file_patterns].each do |k|
+        [:test_folders, :test_file_patterns, exclude_regexps].each do |k|
           @options[k] = Array(@options[k]).uniq.compact
         end
 
-        @inspector = Inspector.new(test_folders, test_file_patterns)
+        @inspector = Inspector.new(test_folders, test_file_patterns, exclude_regexps)
       end
 
       def run(paths, options = {})
@@ -112,6 +113,10 @@ module Guard
 
       def include_folders
         @options[:include]
+      end
+      
+      def exclude_regexps
+        @options[:exclude_regexps]
       end
 
       def test_file_patterns
