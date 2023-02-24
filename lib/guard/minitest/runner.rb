@@ -10,6 +10,7 @@ module Guard
         @options = {
           all_after_pass:     false,
           bundler:            File.exist?("#{Dir.pwd}/Gemfile"),
+          rails_runner:       true,
           rubygems:           false,
           drb:                false,
           zeus:               false,
@@ -98,6 +99,9 @@ module Guard
       def zeus?
         @options[:zeus].is_a?(String) || @options[:zeus]
       end
+      
+      def rails_runner?
+        @options[:rails_runner].is_a?(String) || @options[:rails_runner]
 
       def spring?
         @options[:spring].is_a?(String) || @options[:spring]
@@ -141,6 +145,7 @@ module Guard
       end
 
       def _commander(paths)
+        return rails_runner_command(paths) if rails_runner?
         return drb_command(paths) if drb?
         return zeus_command(paths) if zeus?
         return spring_command(paths) if spring?
@@ -159,6 +164,10 @@ module Guard
         end
       end
 
+      def rails_runner_command(paths)
+        ["bin/rails", "test"] + relative_paths(paths)
+      end
+        
       def drb_command(paths)
         %w(testdrb) + generate_includes(false) + relative_paths(paths)
       end
