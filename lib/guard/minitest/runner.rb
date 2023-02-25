@@ -195,6 +195,7 @@ module Guard
         cmd_parts << '-r rubygems' if rubygems?
         cmd_parts << '-r bundler/setup' if bundler?
         cmd_parts << '-r minitest/autorun' if autorun?
+        cnd_parts << '-r config/boot' # TODO
         cmd_parts.concat(paths.map { |path| "-r ./#{path}" })
 
         unless Utils.minitest_version_gte_5?
