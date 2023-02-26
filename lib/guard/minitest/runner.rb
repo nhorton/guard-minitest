@@ -146,7 +146,7 @@ module Guard
       end
 
       def _commander(paths)
-        return rails_runner_command(paths) if rails_runner?
+        # return rails_runner_command(paths) if rails_runner?
         return drb_command(paths) if drb?
         return zeus_command(paths) if zeus?
         return spring_command(paths) if spring?
@@ -165,9 +165,9 @@ module Guard
         end
       end
 
-      def rails_runner_command(paths)
-        ["bin/rails", "test"] + relative_paths(paths)
-      end
+      # def rails_runner_command(paths)
+      #   ["bin/rails", "test"] + relative_paths(paths)
+      # end
         
       def drb_command(paths)
         %w(testdrb) + generate_includes(false) + relative_paths(paths)
