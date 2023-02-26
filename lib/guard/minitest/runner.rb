@@ -10,7 +10,6 @@ module Guard
         @options = {
           all_after_pass:     false,
           bundler:            File.exist?("#{Dir.pwd}/Gemfile"),
-          rails_runner:       true,
           rubygems:           false,
           drb:                false,
           zeus:               false,
@@ -85,7 +84,7 @@ module Guard
       end
 
       def bundler?
-        @options[:bundler] && !@options[:spring] && @options[:rails_runner]
+        @options[:bundler] && !@options[:spring]
       end
 
       def rubygems?
@@ -98,10 +97,6 @@ module Guard
 
       def zeus?
         @options[:zeus].is_a?(String) || @options[:zeus]
-      end
-      
-      def rails_runner?
-        @options[:rails_runner].is_a?(String) || @options[:rails_runner]
       end
 
       def spring?
@@ -141,12 +136,11 @@ module Guard
 
       def _run_possibly_bundled_command(paths, all)
         args = minitest_command(paths, all)
-        bundler_env = !rails_runner? && !bundler? && defined?(::Bundler)
+        bundler_env = !bundler? && defined?(::Bundler)
         bundler_env ? ::Bundler.with_original_env { _run(*args) } : _run(*args)
       end
 
       def _commander(paths)
-        # return rails_runner_command(paths) if rails_runner?
         return drb_command(paths) if drb?
         return zeus_command(paths) if zeus?
         return spring_command(paths) if spring?
@@ -164,10 +158,6 @@ module Guard
           args.unshift(env) if env.length > 0
         end
       end
-
-      # def rails_runner_command(paths)
-      #   ["bin/rails", "test"] + relative_paths(paths)
-      # end
         
       def drb_command(paths)
         %w(testdrb) + generate_includes(false) + relative_paths(paths)
