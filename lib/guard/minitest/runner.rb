@@ -158,7 +158,7 @@ module Guard
           args.unshift(env) if env.length > 0
         end
       end
-        
+
       def drb_command(paths)
         %w(testdrb) + generate_includes(false) + relative_paths(paths)
       end
@@ -185,7 +185,6 @@ module Guard
         cmd_parts << '-r rubygems' if rubygems?
         cmd_parts << '-r bundler/setup' if bundler?
         cmd_parts << '-r minitest/autorun' if autorun?
-        # cmd_parts << '-r config/boot' # TODO
         cmd_parts.concat(paths.map { |path| "-r ./#{path}" })
 
         unless Utils.minitest_version_gte_5?
